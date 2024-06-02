@@ -67,8 +67,9 @@
                 const username = usernameInput.val().trim();
                 const message = messageInput.val().trim();
                 if (username !== '' && message !== '') {
-                    displayMessage(username + ': ' + message);
-                    saveMessage(username + ': ' + message);
+                    const fullMessage = username + ': ' + message;
+                    displayMessage(fullMessage);
+                    saveMessage(fullMessage);
                     messageInput.val('');
                 }
             }
