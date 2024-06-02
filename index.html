@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat entre Colegas</title>
+    <title>Chat em Tempo Real</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -41,19 +41,38 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Socket.IO -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
     <script>
         $(document).ready(function() {
             const chatMessages = $('#chat-messages');
             const usernameInput = $('#username-input');
             const messageInput = $('#message-input');
+            const sendButton = $('#send-button');
 
-            // Carregar mensagens armazenadas no LocalStorage
-            function loadMessages() {
-                const messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
-                messages.forEach(message => {
-                    displayMessage(message);
-                });
-            }
+            // Conectar ao servidor via Socket.IO
+            const socket = io();
+
+            // Carregar mensagens iniciais ao conectar
+            socket.on('connect', function() {
+                socket.emit('loadMessages');
+            });
+
+            // Exibir mensagem recebida no chat
+            socket.on('message', function(message) {
+                displayMessage(message);
+            });
+
+            // Enviar mensagem ao clicar no botão
+            sendButton.click(function() {
+                const username = usernameInput.val().trim();
+                const message = messageInput.val().trim();
+                if (username !== '' && message !== '') {
+                    const fullMessage = username + ': ' + message;
+                    socket.emit('sendMessage', fullMessage);
+                    messageInput.val('');
+                }
+            });
 
             // Exibir mensagem no chat
             function displayMessage(message) {
@@ -61,31 +80,52 @@
                 chatMessages.append(messageElement);
                 chatMessages.scrollTop(chatMessages[0].scrollHeight); // Rolar automaticamente para baixo
             }
+        });
+    </script>
 
-            // Enviar mensagem
-            function sendMessage() {
-                const username = usernameInput.val().trim();
-                const message = messageInput.val().trim();
-                if (username !== '' && message !== '') {
-                    const fullMessage = username + ': ' + message;
-                    displayMessage(fullMessage);
-                    saveMessage(fullMessage);
-                    messageInput.val('');
-                }
-            }
+    <script>
+        // Parte do servidor (Node.js)
+        const express = require('express');
+        const http = require('http');
+        const socketIo = require('socket.io');
+        const path = require('path');
 
-            // Salvar mensagem no LocalStorage
-            function saveMessage(message) {
-                const messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+        const app = express();
+        const server = http.createServer(app);
+        const io = socketIo(server);
+
+        const PORT = process.env.PORT || 3000;
+
+        // Servir o arquivo HTML
+        app.use(express.static(path.join(__dirname, '/public')));
+
+        // Array para armazenar mensagens
+        let messages = [];
+
+        // Evento de conexão do Socket.IO
+        io.on('connection', (socket) => {
+            console.log('Novo usuário conectado');
+
+            // Enviar mensagens armazenadas ao usuário
+            socket.on('loadMessages', () => {
+                socket.emit('message', messages);
+            });
+
+            // Receber e transmitir mensagem enviada
+            socket.on('sendMessage', (message) => {
                 messages.push(message);
-                localStorage.setItem('chatMessages', JSON.stringify(messages));
-            }
+                io.emit('message', message);
+            });
 
-            // Event listener para o botão de enviar
-            $('#send-button').click(sendMessage);
+            // Evento de desconexão do Socket.IO
+            socket.on('disconnect', () => {
+                console.log('Usuário desconectado');
+            });
+        });
 
-            // Carregar mensagens ao carregar a página
-            loadMessages();
+        // Iniciar o servidor
+        server.listen(PORT, () => {
+            console.log(`Servidor iniciado na porta ${PORT}`);
         });
     </script>
 </body>
