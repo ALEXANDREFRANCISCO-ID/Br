@@ -1,102 +1,91 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-<!DOCTYPE html>
-<html>
-<head>
-  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
-  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      font-size: 12px;
-      margin: 20px;
-    }
-    .math {
-      font-family: Arial, sans-serif !important;
-      font-size: 12px !important;
-    }
-    .mdl-card {
-      width: 100%;
-      margin: auto;
-    }
-    .mdl-card__supporting-text {
-      font-size: 12px;
-    }
-  </style>
-  <script type="text/javascript" async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
-  </script>
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      "HTML-CSS": { scale: 100, availableFonts: ["Arial"] }
-    });
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat entre Colegas</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Estilo personalizado */
+        #chat-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 50px;
+        }
+        #chat-messages {
+            margin-bottom: 20px;
+            overflow-y: scroll;
+            max-height: 300px;
+        }
+    </style>
 </head>
 <body>
-  <div class="mdl-card mdl-shadow--2dp">
-    <div class="mdl-card__supporting-text">
-      <p>Para resolver a equação \( x^4 + 4x - 5 = 0 \), seguimos os seguintes passos:</p>
-
-      <p><b>Passo 1: Testando possíveis raízes racionais</b></p>
-      <p>Substituímos \( x = 1 \) na equação \( x^4 + 4x - 5 = 0 \):</p>
-      <p class="math">
-      \[
-      1^4 + 4(1) - 5 = 1 + 4 - 5 = 0
-      \]
-      </p>
-      <p>Logo, \( x = 1 \) é uma raiz da equação.</p>
-
-      <p><b>Passo 2: Divisão polinomial</b></p>
-      <p>Agora que sabemos que \( x = 1 \) é uma raiz, podemos dividir o polinômio \( x^4 + 4x - 5 \) por \( x - 1 \).</p>
-      <p>Usando a divisão sintética, dividimos \( x^4 + 0x^3 + 0x^2 + 4x - 5 \) por \( x - 1 \):</p>
-      <p class="math">
-      \[
-      \begin{array}{r|rrrrr}
-       1 & 1 & 0 & 0 & 4 & -5 \\
-         &   & 1 & 1 & 1 & 5 \\
-      \hline
-         & 1 & 1 & 1 & 5 & 0 \\
-      \end{array}
-      \]
-      </p>
-      <p>O quociente é \( x^3 + x^2 + x + 5 \) e o resto é 0, confirmando que a divisão é exata.</p>
-
-      <p><b>Passo 3: Resolver o polinômio cúbico</b></p>
-      <p>Agora precisamos resolver \( x^3 + x^2 + x + 5 = 0 \).</p>
-      <p>Testando novamente possíveis raízes racionais:</p>
-      <p>Para \( x = -1 \):</p>
-      <p class="math">
-      \[
-      (-1)^3 + (-1)^2 + (-1) + 5 = -1 + 1 - 1 + 5 = 4 \neq 0
-      \]
-      </p>
-      <p>Para \( x = -5 \):</p>
-      <p class="math">
-      \[
-      (-5)^3 + (-5)^2 + (-5) + 5 = -125 + 25 - 5 + 5 = -100 \neq 0
-      \]
-      </p>
-      <p>Nenhuma raiz racional óbvia funciona, então precisamos usar métodos numéricos ou gráficos para encontrar as raízes restantes.</p>
-
-      <p><b>Passo 4: Soluções numéricas ou fatorização</b></p>
-      <p>Podemos usar o método de Newton-Raphson ou software para encontrar as raízes numéricas do polinômio cúbico \( x^3 + x^2 + x + 5 = 0 \).</p>
-
-      <p><b>Solução final</b></p>
-      <p>A equação \( x^4 + 4x - 5 = 0 \) tem uma raiz real \( x = 1 \) e outras raízes podem ser encontradas numericamente.</p>
-
-      <p><b>Resumo</b></p>
-      <p>A solução exata é \( x = 1 \) e raízes numéricas podem ser obtidas para o polinômio cúbico resultante.</p>
-      <p>A notação em conjunto será:</p>
-      <p class="math">
-      \[
-      S = \{ \pm 1, \text{raízes numéricas restantes} \}
-      \]
-      </p>
+    <div id="chat-container" class="container">
+        <div id="chat-messages" class="mb-3"></div>
+        <div class="input-group mb-3">
+            <input type="text" id="username-input" class="form-control" placeholder="Seu nome">
+        </div>
+        <div class="input-group mb-3">
+            <input type="text" id="message-input" class="form-control" placeholder="Digite sua mensagem...">
+            <div class="input-group-append">
+                <button id="send-button" class="btn btn-primary">Enviar</button>
+            </div>
+        </div>
     </div>
-  </div>
+
+    <!-- Bootstrap JS (jQuery is required) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            const chatMessages = $('#chat-messages');
+            const usernameInput = $('#username-input');
+            const messageInput = $('#message-input');
+
+            // Carregar mensagens armazenadas no LocalStorage
+            function loadMessages() {
+                const messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+                messages.forEach(message => {
+                    displayMessage(message);
+                });
+            }
+
+            // Exibir mensagem no chat
+            function displayMessage(message) {
+                const messageElement = $('<div class="alert alert-primary"></div>').text(message);
+                chatMessages.append(messageElement);
+                chatMessages.scrollTop(chatMessages[0].scrollHeight); // Rolar automaticamente para baixo
+            }
+
+            // Enviar mensagem
+            function sendMessage() {
+                const username = usernameInput.val().trim();
+                const message = messageInput.val().trim();
+                if (username !== '' && message !== '') {
+                    displayMessage(username + ': ' + message);
+                    saveMessage(username + ': ' + message);
+                    messageInput.val('');
+                }
+            }
+
+            // Salvar mensagem no LocalStorage
+            function saveMessage(message) {
+                const messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+                messages.push(message);
+                localStorage.setItem('chatMessages', JSON.stringify(messages));
+            }
+
+            // Event listener para o botão de enviar
+            $('#send-button').click(sendMessage);
+
+            // Carregar mensagens ao carregar a página
+            loadMessages();
+        });
+    </script>
 </body>
 </html>
