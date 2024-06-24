@@ -3,130 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat em Tempo Real</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        /* Estilo personalizado */
-        #chat-container {
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-top: 50px;
-        }
-        #chat-messages {
-            margin-bottom: 20px;
-            overflow-y: scroll;
-            max-height: 300px;
-        }
-    </style>
+    <title>Cálculo da Medida do Lado de uma Sala Quadrangular</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-    <div id="chat-container" class="container">
-        <div id="chat-messages" class="mb-3"></div>
-        <div class="input-group mb-3">
-            <input type="text" id="username-input" class="form-control" placeholder="Seu nome">
-        </div>
-        <div class="input-group mb-3">
-            <input type="text" id="message-input" class="form-control" placeholder="Digite sua mensagem...">
-            <div class="input-group-append">
-                <button id="send-button" class="btn btn-primary">Enviar</button>
-            </div>
-        </div>
-    </div>
 
-    <!-- Bootstrap JS (jQuery is required) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- Socket.IO -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
-    <script>
-        $(document).ready(function() {
-            const chatMessages = $('#chat-messages');
-            const usernameInput = $('#username-input');
-            const messageInput = $('#message-input');
-            const sendButton = $('#send-button');
+<h1>Cálculo da Medida do Lado de uma Sala Quadrangular</h1>
 
-            // Conectar ao servidor via Socket.IO
-            const socket = io();
+<h2>Passos e Explicação:</h2>
 
-            // Carregar mensagens iniciais ao conectar
-            socket.on('connect', function() {
-                socket.emit('loadMessages');
-            });
+<ol>
+    <li><strong>Fórmula do Perímetro:</strong>
+        <p>A fórmula do perímetro de um quadrado é dada por:</p>
+        \[
+        P = 4s
+        \]
+        <p>onde:</p>
+        <ul>
+            <li>\( P \) é o perímetro do quadrado.</li>
+            <li>\( s \) é a medida do lado do quadrado.</li>
+        </ul>
+        <p>O perímetro é a soma de todos os lados de uma figura. Como um quadrado tem quatro lados iguais, multiplicamos a medida do lado (\( s \)) por 4 para obter o perímetro (\( P \)).</p>
+    </li>
+    <li><strong>Substituição dos Valores:</strong>
+        <p>Neste passo, substituímos o valor conhecido do perímetro na fórmula. Suponhamos que o perímetro da sala seja \( 6.28 \) metros. Então, substituímos \( P \) por \( 6.28 \) na fórmula:</p>
+        \[
+        4s = 6.28
+        \]
+    </li>
+    <li><strong>Solução da Equação:</strong>
+        <p>Para encontrar a medida do lado (\( s \)), precisamos resolver a equação \( 4s = 6.28 \) para \( s \). Fazemos isso dividindo ambos os lados da equação por 4:</p>
+        \[
+        s = \frac{6.28}{4}
+        \]
+        <p>Ao calcular:</p>
+        \[
+        s = 1.57
+        \]
+        <p>Portanto, a medida do lado do quadrado é \( 1.57 \) metros.</p>
+    </li>
+</ol>
 
-            // Exibir mensagem recebida no chat
-            socket.on('message', function(message) {
-                displayMessage(message);
-            });
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        MathJax.typeset();
+    });
+</script>
 
-            // Enviar mensagem ao clicar no botão
-            sendButton.click(function() {
-                const username = usernameInput.val().trim();
-                const message = messageInput.val().trim();
-                if (username !== '' && message !== '') {
-                    const fullMessage = username + ': ' + message;
-                    socket.emit('sendMessage', fullMessage);
-                    messageInput.val('');
-                }
-            });
-
-            // Exibir mensagem no chat
-            function displayMessage(message) {
-                const messageElement = $('<div class="alert alert-primary"></div>').text(message);
-                chatMessages.append(messageElement);
-                chatMessages.scrollTop(chatMessages[0].scrollHeight); // Rolar automaticamente para baixo
-            }
-        });
-    </script>
-
-    <script>
-        // Parte do servidor (Node.js)
-        const express = require('express');
-        const http = require('http');
-        const socketIo = require('socket.io');
-        const path = require('path');
-
-        const app = express();
-        const server = http.createServer(app);
-        const io = socketIo(server);
-
-        const PORT = process.env.PORT || 3000;
-
-        // Servir o arquivo HTML
-        app.use(express.static(path.join(__dirname, '/public')));
-
-        // Array para armazenar mensagens
-        let messages = [];
-
-        // Evento de conexão do Socket.IO
-        io.on('connection', (socket) => {
-            console.log('Novo usuário conectado');
-
-            // Enviar mensagens armazenadas ao usuário
-            socket.on('loadMessages', () => {
-                socket.emit('message', messages);
-            });
-
-            // Receber e transmitir mensagem enviada
-            socket.on('sendMessage', (message) => {
-                messages.push(message);
-                io.emit('message', message);
-            });
-
-            // Evento de desconexão do Socket.IO
-            socket.on('disconnect', () => {
-                console.log('Usuário desconectado');
-            });
-        });
-
-        // Iniciar o servidor
-        server.listen(PORT, () => {
-            console.log(`Servidor iniciado na porta ${PORT}`);
-        });
-    </script>
 </body>
 </html>
