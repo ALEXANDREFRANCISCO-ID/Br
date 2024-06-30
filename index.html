@@ -1,55 +1,98 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Números de Exames com Área de Respostas</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 colunas de largura igual */
+    gap: 10px; /* Espaço entre as células */
+    margin-bottom: 20px;
+  }
+  .exame {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+  }
+  .exame a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+  }
+  .exame a:hover {
+    background-color: #f0f0f0;
+  }
+  .respostas {
+    width: 100%;
+    max-width: 600px; /* largura máxima para evitar que a div fique muito larga */
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+  }
+</style>
+</head>
+<body>
+
+  
+  <div class="respostas">
+    <h2>Respostas número 3</h2>
+    <div id="resultado">
+        <!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cálculo da Medida do Lado de uma Sala Quadrangular</title>
+    <title>Quantidade Total de Açúcar Vendida</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
+    <h2>Cálculo da Quantidade Total de Açúcar Vendida</h2>
 
-<h1>Cálculo da Medida do Lado de uma Sala Quadrangular</h1>
+    <p>Para determinar a porção total de açúcar que o comerciante vendeu, somamos as quantidades vendidas em cada dia:</p>
 
-<h2>Passos e Explicação:</h2>
+    <ol>
+        <li>No primeiro dia, o comerciante vendeu \( 0,25 \) kg de açúcar.</li>
+        <li>No segundo dia, foram vendidos \( 45 \) kg de açúcar.</li>
+        <li>No terceiro dia, foram vendidos os restantes \( 0,15 \) kg de açúcar.</li>
+    </ol>
 
-<ol>
-    <li><strong>Fórmula do Perímetro:</strong>
-        <p>A fórmula do perímetro de um quadrado é dada por:</p>
-        \[
-        P = 4s
-        \]
-        <p>onde:</p>
-        <ul>
-            <li>\( P \) é o perímetro do quadrado.</li>
-            <li>\( s \) é a medida do lado do quadrado.</li>
-        </ul>
-        <p>O perímetro é a soma de todos os lados de uma figura. Como um quadrado tem quatro lados iguais, multiplicamos a medida do lado (\( s \)) por 4 para obter o perímetro (\( P \)).</p>
-    </li>
-    <li><strong>Substituição dos Valores:</strong>
-        <p>Neste passo, substituímos o valor conhecido do perímetro na fórmula. Suponhamos que o perímetro da sala seja \( 6.28 \) metros. Então, substituímos \( P \) por \( 6.28 \) na fórmula:</p>
-        \[
-        4s = 6.28
-        \]
-    </li>
-    <li><strong>Solução da Equação:</strong>
-        <p>Para encontrar a medida do lado (\( s \)), precisamos resolver a equação \( 4s = 6.28 \) para \( s \). Fazemos isso dividindo ambos os lados da equação por 4:</p>
-        \[
-        s = \frac{6.28}{4}
-        \]
-        <p>Ao calcular:</p>
-        \[
-        s = 1.57
-        \]
-        <p>Portanto, a medida do lado do quadrado é \( 1.57 \) metros.</p>
-    </li>
-</ol>
+    <p>Agora, vamos somar esses valores para encontrar a quantidade total vendida:</p>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        MathJax.typeset();
+    <div>
+        \[
+        0,25 \, \text{kg} + 45 \, \text{kg} + 0,15 \, \text{kg} = 45,40 \, \text{kg}
+        \]
+    </div>
+
+    <p>Portanto, o comerciante vendeu um total de \( \boxed{45,40 \, \text{kg}} \) de açúcar.</p>
+
+    </div>
+  </div>
+
+  <script>
+    // Exemplo de script para atualizar a área de respostas
+    const exames = document.querySelectorAll('.exame');
+    const resultadoDiv = document.getElementById('resultado');
+
+    exames.forEach(exame => {
+      exame.addEventListener('click', function() {
+        resultadoDiv.innerHTML = `Você selecionou o exame ${exame.textContent}.`;
+      });
     });
-</script>
-
+  </script>
 </body>
 </html>
